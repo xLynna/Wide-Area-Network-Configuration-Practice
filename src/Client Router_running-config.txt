@@ -1,0 +1,104 @@
+!
+version 12.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname CR
+!
+!
+!
+enable secret 5 $1$mERr$FgbWr8D/TXuGaRx5sbz6n1
+!
+!
+ip dhcp excluded-address 192.168.1.1
+!
+ip dhcp pool wired_network
+ network 192.168.1.0 255.255.255.224
+ default-router 192.168.1.1
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ description connected to wireless router
+ ip address 192.168.1.97 255.255.255.224
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 192.168.1.1 255.255.255.224
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface Serial0/1/0
+ ip address 192.168.1.66 255.255.255.224
+ ip nat outside
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip nat pool ISP 192.168.1.66 192.168.1.66 netmask 255.255.255.224
+ip nat inside source list 1 pool ISP overload
+ip classless
+ip route 0.0.0.0 0.0.0.0 192.168.1.33 
+ip route 0.0.0.0 0.0.0.0 192.168.1.65 
+!
+ip flow-export version 9
+!
+!
+access-list 1 permit 192.168.1.0 0.0.0.31
+access-list 1 permit 192.168.1.96 0.0.0.31
+!
+banner motd 
+------------------------------------------------
+!!!!!!!!!!!Authorized Access Only!!!!!!!!!!!!!!!
+------------------------------------------------
+
+!
+!
+!
+!
+!
+line con 0
+ password zxc22
+ login
+!
+line aux 0
+!
+line vty 0 4
+ password zxc85
+ login
+!
+!
+!
+end
+
